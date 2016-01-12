@@ -1,16 +1,9 @@
-package com.jianzhi.core.controller;
+package com.jianzhi.controller;
 
-import com.jianzhi.core.location.model.Location;
 import com.jianzhi.core.location.service.LocationService;
-import com.jianzhi.core.user.model.User;
-import com.jianzhi.core.util.message.ReturnMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/json/user/location")

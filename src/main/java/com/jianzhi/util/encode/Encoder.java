@@ -1,6 +1,5 @@
-package com.jianzhi.core.util.encode;
+package com.jianzhi.util.encode;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.util.Base64;

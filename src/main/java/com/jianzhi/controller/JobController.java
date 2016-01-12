@@ -1,17 +1,15 @@
-package com.jianzhi.core.controller;
+package com.jianzhi.controller;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jianzhi.core.job.model.Job;
 import com.jianzhi.core.job.service.JobService;
 import com.jianzhi.core.user.model.User;
-import com.jianzhi.core.util.message.ReturnMessage;
+import com.jianzhi.util.message.ReturnMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/json/user/job", method = RequestMethod.POST)

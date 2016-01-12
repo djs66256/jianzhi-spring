@@ -1,13 +1,13 @@
-package com.jianzhi.core.controller;
+package com.jianzhi.controller;
 
 
 import com.jianzhi.core.auth.model.Token;
 import com.jianzhi.core.auth.service.TokenService;
 import com.jianzhi.core.user.model.User;
 import com.jianzhi.core.user.service.UserService;
-import com.jianzhi.core.util.encode.Encoder;
-import com.jianzhi.core.util.message.ReturnMessage;
-import com.jianzhi.core.util.validate.Validate;
+import com.jianzhi.util.encode.Encoder;
+import com.jianzhi.util.message.ReturnMessage;
+import com.jianzhi.util.validate.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

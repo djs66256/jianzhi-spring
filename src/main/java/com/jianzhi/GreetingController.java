@@ -3,17 +3,18 @@ package com.jianzhi;
 
 import com.jianzhi.core.auth.model.Token;
 import com.jianzhi.core.auth.service.TokenService;
+import com.jianzhi.core.phone.service.PhoneValidateService;
 import com.jianzhi.core.user.dao.UserDao;
 import com.jianzhi.core.user.model.User;
-import com.jianzhi.core.util.message.ReturnMessage;
+import com.jianzhi.util.message.ReturnMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.crypto.Data;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -28,6 +29,9 @@ public class GreetingController {
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private PhoneValidateService phoneValidateService;
 
     @RequestMapping("/greeting")
     public Object greeting(@CookieValue(value = "token", required = false) String token,
@@ -55,6 +59,7 @@ public class GreetingController {
     }
 
     @RequestMapping("/db")
+    @Cacheable()
     public String db() {
 //        User user = new User();
 //        user.setName("haha");
@@ -84,6 +89,11 @@ public class GreetingController {
         }
 
         return null;
+    }
+
+    @RequestMapping("/json/phone")
+    public Object phone(@RequestParam String phone) {
+        return phoneValidateService.getIdentifyingCodeByPhoneNumber(phone);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.jianzhi.core.util.message;
+package com.jianzhi.util.message;
 
 /**
  * Created by daniel on 15/6/17.

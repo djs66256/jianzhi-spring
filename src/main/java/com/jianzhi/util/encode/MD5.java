@@ -1,4 +1,4 @@
-package com.jianzhi.core.util.encode;
+package com.jianzhi.util.encode;
 
 import java.security.MessageDigest;
 

@@ -1,6 +1,6 @@
-package com.jianzhi.core.controller;
+package com.jianzhi.controller;
 
-import com.jianzhi.core.util.message.ReturnMessage;
+import com.jianzhi.util.message.ReturnMessage;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;

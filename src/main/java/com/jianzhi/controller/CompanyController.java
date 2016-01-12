@@ -1,10 +1,9 @@
-package com.jianzhi.core.controller;
+package com.jianzhi.controller;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jianzhi.core.company.model.Company;
 import com.jianzhi.core.company.service.CompanyService;
 import com.jianzhi.core.user.model.User;
-import com.jianzhi.core.util.message.ReturnMessage;
+import com.jianzhi.util.message.ReturnMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

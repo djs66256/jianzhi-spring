@@ -1,4 +1,4 @@
-package com.jianzhi.core.controller;
+package com.jianzhi.controller;
 
 
 import com.jianzhi.core.resume.model.BaseResume;
@@ -6,12 +6,11 @@ import com.jianzhi.core.resume.model.Education;
 import com.jianzhi.core.resume.model.WorkExperience;
 import com.jianzhi.core.resume.service.ResumeService;
 import com.jianzhi.core.user.model.User;
-import com.jianzhi.core.util.message.ReturnMessage;
+import com.jianzhi.util.message.ReturnMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @RestController
 @RequestMapping("/json/user/resume")

@@ -1,4 +1,4 @@
-package com.jianzhi.core.util.validate;
+package com.jianzhi.util.validate;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
