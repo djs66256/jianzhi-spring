@@ -1,5 +1,6 @@
 package com.jianzhi.core.company.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jianzhi.core.user.model.User;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ public class Company {
     private Long id;
 
     @OneToOne
+    @JsonIgnore
     private User user;
 
     @Column(length = 32)

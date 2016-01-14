@@ -14,7 +14,7 @@ import java.util.List;
 @Table
 public class User {
     static public int DEFAULT = 0;
-    static public int STUDENT = 1;
+    static public int JOBSEEKER = 1;
     static public int BOSS = 2;
 
     @Id

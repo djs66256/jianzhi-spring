@@ -5,10 +5,7 @@ import com.jianzhi.core.company.service.CompanyService;
 import com.jianzhi.core.user.model.User;
 import com.jianzhi.util.message.ReturnMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,14 +29,14 @@ public class CompanyController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public Object createCompany(Company company,
+    public Object createCompany(@RequestBody Company company,
                                 HttpServletRequest request) {
         try {
             validateCompany(company);
             User user = (User)request.getSession().getAttribute("user");
             company.setUser(user);
             companyService.save(company);
-            return new ReturnMessage(ReturnMessage.SUCCESS);
+            return new ReturnMessage(ReturnMessage.SUCCESS, company);
         }
         catch (Exception e) {
             return new ReturnMessage(ReturnMessage.ERROR, e.getMessage());
@@ -48,26 +45,17 @@ public class CompanyController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public Object editCompany(Company company,
-                                HttpServletRequest request) {
+                              HttpServletRequest request) {
         try {
-            Company myCompany = companyService.findById(company.getId());
-            if (myCompany != null) {
-                User user = (User) request.getSession().getAttribute("user");
-                if (user.getId().equals(myCompany.getUser().getId())) {
-                    validateCompany(company);
-                    myCompany.setName(company.getName());
-                    myCompany.setDescription(company.getDescription());
+            validateCompany(company);
+            User user = (User) request.getSession().getAttribute("user");
+            Company myCompany = companyService.findByUser(user);
 
-                    companyService.save(myCompany);
-                    return new ReturnMessage(ReturnMessage.SUCCESS);
-                }
-                else {
-                    return new ReturnMessage(ReturnMessage.ERROR, "不能修改其他人的公司信息");
-                }
-            }
-            else {
-                return new ReturnMessage(ReturnMessage.ERROR, "公司信息不存在");
-            }
+            myCompany.setName(company.getName());
+            myCompany.setDescription(company.getDescription());
+
+            companyService.save(myCompany);
+            return new ReturnMessage(ReturnMessage.SUCCESS);
         }
         catch (Exception e) {
             return new ReturnMessage(ReturnMessage.ERROR, e.getMessage());
@@ -87,10 +75,12 @@ public class CompanyController {
         }
     }
 */
+    /*
     @RequestMapping(value = "/upload/logo", method = RequestMethod.POST)
     public Object uploadLogoCompany(@RequestParam MultipartFile file,
                                     HttpServletRequest request) {
         // TODO:...
         return new ReturnMessage(ReturnMessage.SUCCESS);
     }
+    */
 }

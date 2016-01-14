@@ -9,9 +9,6 @@ import java.util.List;
 @Entity
 @Table
 public class Education {
-    public static int DEFAULT = 0;
-    public static int MIDDLESCHOOL = 1;
-    // TODO: major
 
     @Id
     @GeneratedValue
@@ -24,7 +21,7 @@ public class Education {
     private String major;
 
     @Column
-    private int level = DEFAULT;
+    private int level = BaseResume.OTHER_SCHOOL;
 
     @Column
     private Date fromTime;

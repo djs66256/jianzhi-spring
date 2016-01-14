@@ -96,4 +96,11 @@ public class GreetingController {
         return phoneValidateService.getIdentifyingCodeByPhoneNumber(phone);
     }
 
+    @RequestMapping("/json/phoneget")
+    public Object phoneget(@RequestParam String phone,
+                           @RequestParam String validate){
+        return phoneValidateService.isValidated(validate, phone);
+
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.jianzhi.core.company.service;
 
 import com.jianzhi.core.company.model.Company;
+import com.jianzhi.core.user.model.User;
 import org.springframework.stereotype.Service;
 
 /**
@@ -10,4 +11,5 @@ public interface CompanyService {
 
     void save(Company company);
     Company findById(Long id);
+    Company findByUser(User user);
 }

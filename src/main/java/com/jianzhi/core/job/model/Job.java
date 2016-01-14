@@ -1,5 +1,6 @@
 package com.jianzhi.core.job.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jianzhi.core.company.model.Company;
 import com.jianzhi.core.user.model.User;
 import sun.dc.pr.PRError;
@@ -23,6 +24,7 @@ public class Job {
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
     private User user;
 
     @Column

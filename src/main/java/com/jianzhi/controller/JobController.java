@@ -1,10 +1,12 @@
 package com.jianzhi.controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jianzhi.core.job.model.Job;
 import com.jianzhi.core.job.service.JobService;
 import com.jianzhi.core.user.model.User;
 import com.jianzhi.util.message.ReturnMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,14 +33,15 @@ public class JobController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public Object createJob(Job job,
-                                HttpServletRequest request) {
+    @JsonIgnoreProperties({"user","active","status"})
+    public Object createJob(@RequestBody Job job,
+                            HttpServletRequest request) {
         try {
             validateJob(job);
             User user = (User)request.getSession().getAttribute("user");
             job.setUser(user);
             jobService.save(job);
-            return new ReturnMessage(ReturnMessage.SUCCESS);
+            return new ReturnMessage(ReturnMessage.SUCCESS, job);
         }
         catch (Exception e) {
             return new ReturnMessage(ReturnMessage.ERROR, e.getMessage());

@@ -13,5 +13,7 @@ public interface TokenService {
 
     Token saveSession(User user);
 
+    void deleteSession(User user);
+
     int getMaxAge();
 }

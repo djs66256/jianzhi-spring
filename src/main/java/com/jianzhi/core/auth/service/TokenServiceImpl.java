@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -25,7 +26,11 @@ public class TokenServiceImpl implements TokenService {
 
     public User findByTokenAndUserId(String token, Long userId) {
         Token token1 = findByToken(token);
-        if (token1.getUser().getId() == userId) {
+        if (token1.getExpireDate().before(new Date())) {
+            tokenDao.delete(token1);
+            return null;
+        }
+        if (token1.getUser().getId().equals(userId)) {
             return token1.getUser();
         }
         return null;
@@ -43,6 +48,14 @@ public class TokenServiceImpl implements TokenService {
 
         save(token);
         return token;
+    }
+
+    @Override
+    public void deleteSession(User user) {
+        List<Token> tokens = tokenDao.findByUser(user);
+        if (tokens != null && tokens.size() > 0) {
+            tokenDao.delete(tokens);
+        }
     }
 
     @Override

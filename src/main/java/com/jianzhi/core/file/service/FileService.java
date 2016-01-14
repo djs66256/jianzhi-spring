@@ -1,6 +1,7 @@
 package com.jianzhi.core.file.service;
 
 import com.jianzhi.core.file.model.File;
+import com.jianzhi.core.user.model.User;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -9,5 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 public interface FileService {
 
     void saveDistinct(File file, MultipartFile fileData);
+
+    void saveHeadImage(User user, MultipartFile file) throws Exception;
+
 
 }

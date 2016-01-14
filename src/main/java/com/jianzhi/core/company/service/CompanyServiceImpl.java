@@ -2,6 +2,7 @@ package com.jianzhi.core.company.service;
 
 import com.jianzhi.core.company.dao.CompanyDao;
 import com.jianzhi.core.company.model.Company;
+import com.jianzhi.core.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +23,15 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public Company findById(Long id) {
         return findById(id);
+    }
+
+    @Override
+    public Company findByUser(User user) {
+        Company company = companyDao.findByUser(user);
+        if (company == null) {
+            company = new Company();
+            company.setUser(user);
+        }
+        return company;
     }
 }
