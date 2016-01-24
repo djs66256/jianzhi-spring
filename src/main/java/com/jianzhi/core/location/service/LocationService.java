@@ -1,12 +1,16 @@
 package com.jianzhi.core.location.service;
 
+import com.jianzhi.core.company.model.Company;
 import com.jianzhi.core.location.model.Location;
-import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
- * Created by daniel on 16/1/4.
+ * Created by daniel on 2016/1/17.
  */
 public interface LocationService {
+    void save(Location address);
 
-    void save(Location location);
+    List<Location> find();
+    Location findByCompany(Company company);
 }

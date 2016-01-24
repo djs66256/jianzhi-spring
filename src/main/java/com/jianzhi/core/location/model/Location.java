@@ -1,5 +1,7 @@
 package com.jianzhi.core.location.model;
 
+import com.jianzhi.core.company.model.Company;
+import com.jianzhi.core.resume.model.BaseResume;
 import com.jianzhi.core.user.model.User;
 
 import javax.persistence.*;
@@ -16,6 +18,9 @@ public class Location {
 
     @Column
     private double latitude; //维度
+
+    @OneToOne
+    private Company company;
 
     @OneToOne
     private User user;
@@ -42,6 +47,14 @@ public class Location {
 
     public void setLatitude(double latitude) {
         this.latitude = latitude;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     public User getUser() {

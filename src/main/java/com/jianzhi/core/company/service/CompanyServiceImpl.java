@@ -31,6 +31,7 @@ public class CompanyServiceImpl implements CompanyService {
         if (company == null) {
             company = new Company();
             company.setUser(user);
+            save(company);
         }
         return company;
     }

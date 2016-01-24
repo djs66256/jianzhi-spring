@@ -2,7 +2,10 @@ package com.jianzhi.controller;
 
 import com.jianzhi.core.company.model.Company;
 import com.jianzhi.core.company.service.CompanyService;
+import com.jianzhi.core.location.model.Location;
+import com.jianzhi.core.location.service.LocationService;
 import com.jianzhi.core.user.model.User;
+import com.jianzhi.util.baiduMap.BaiduMapApi;
 import com.jianzhi.util.message.ReturnMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +19,12 @@ public class CompanyController {
 
     @Autowired
     private CompanyService companyService;
+
+    @Autowired
+    private BaiduMapApi baiduMapApi;
+
+    @Autowired
+    private LocationService locationService;
 
     private boolean validateCompany(Company company) throws Exception {
         if (company.getName() == null || company.getName().isEmpty()) {
@@ -44,7 +53,7 @@ public class CompanyController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public Object editCompany(Company company,
+    public Object editCompany(@RequestBody Company company,
                               HttpServletRequest request) {
         try {
             validateCompany(company);
@@ -53,6 +62,23 @@ public class CompanyController {
 
             myCompany.setName(company.getName());
             myCompany.setDescription(company.getDescription());
+
+            if (company.getAddress() != null && !company.getAddress().isEmpty()
+                    && company.getAddressCode() != 0) {
+                try {
+                    Location address = baiduMapApi.getGeocode(company.getAddress());
+                    Location myAddress = locationService.findByCompany(myCompany);
+                    myCompany.setAddressCode(company.getAddressCode());
+                    myCompany.setAddress(company.getAddress());
+
+                    myAddress.setLatitude(address.getLatitude());
+                    myAddress.setLongitude(address.getLongitude());
+
+                    locationService.save(myAddress);
+                }
+                catch (Exception e) {
+                }
+            }
 
             companyService.save(myCompany);
             return new ReturnMessage(ReturnMessage.SUCCESS);

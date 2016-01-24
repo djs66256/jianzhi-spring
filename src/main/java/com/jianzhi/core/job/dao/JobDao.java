@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * Created by daniel on 16/1/4.
  */
-public interface JobDao extends JpaRepository<Job, Long> {
+public interface JobDao extends JpaRepository<Job, Long>, JobDaoCustom {
     Job findByIdAndActive(Long id, boolean active);
 }

@@ -48,7 +48,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login")//, method = RequestMethod.POST)
     public Object loginRequest(@RequestParam(required = false) String username,
                                @RequestParam(required = false) String password,
                                HttpServletRequest request,

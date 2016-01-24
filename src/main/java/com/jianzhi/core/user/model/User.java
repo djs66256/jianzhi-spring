@@ -8,6 +8,7 @@ import com.jianzhi.core.resume.model.BaseResume;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -43,6 +44,9 @@ public class User {
     @Column(length = 4)
     private String gender;
 
+    @Column
+    private Date registerTime;
+
 //    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
 //    private BaseResume resume;
 
@@ -51,9 +55,6 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Job> jobs = new ArrayList<>();
-
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
-    private Location location;
 
     public User() {
     }
@@ -143,12 +144,12 @@ public class User {
         this.jobs = jobs;
     }
 
-    public Location getLocation() {
-        return location;
+    public Date getRegisterTime() {
+        return registerTime;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setRegisterTime(Date registerTime) {
+        this.registerTime = registerTime;
     }
 
     @Override

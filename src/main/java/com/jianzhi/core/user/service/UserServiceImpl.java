@@ -5,6 +5,8 @@ import com.jianzhi.core.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * Created by daniel on 15/6/16.
  */
@@ -17,7 +19,7 @@ public class UserServiceImpl implements UserService {
 
     public User createUser(String username, String password) {
         User user = new User(username, password);
-
+        user.setRegisterTime(new Date());
         save(user);
         return user;
     }

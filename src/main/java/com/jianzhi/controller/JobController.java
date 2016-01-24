@@ -2,6 +2,7 @@ package com.jianzhi.controller;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jianzhi.core.job.model.Job;
+import com.jianzhi.core.job.model.JobDetailInfo;
 import com.jianzhi.core.job.service.JobService;
 import com.jianzhi.core.user.model.User;
 import com.jianzhi.util.message.ReturnMessage;
@@ -102,18 +103,20 @@ public class JobController {
             return new ReturnMessage(ReturnMessage.ERROR, e.getMessage());
         }
     }
-/*
+
     @RequestMapping("/info")
     @JsonIgnoreProperties(value = {"user", "active"})
-    public Object infoJob(HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute("user");
-        List<Job> jobs = user.getJobs();
-        if (jobs != null) {
-            return new ReturnMessage(ReturnMessage.SUCCESS, jobs);
+    public Object infoJob(
+            String id,
+            HttpServletRequest request) {
+//        Job job = jobService.findById(new Long(id));
+        JobDetailInfo job = jobService.findDetailInfo(new Long(id));
+        if (job != null) {
+            return new ReturnMessage(ReturnMessage.SUCCESS, job);
         }
         else {
-            return new ReturnMessage(ReturnMessage.SUCCESS, null);
+            return new ReturnMessage(ReturnMessage.ERROR, "工作信息不存在");
         }
     }
-    */
+
 }

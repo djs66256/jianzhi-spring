@@ -26,8 +26,11 @@ public class Company {
     @Column
     private String description;
 
+    @Column
+    private int addressCode = 0;
+
     @Column(length = 64)
-    private String location;
+    private String address;
 
     public Long getId() {
         return id;
@@ -61,19 +64,27 @@ public class Company {
         this.description = description;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
     public String getLogo() {
         return logo;
     }
 
     public void setLogo(String logo) {
         this.logo = logo;
+    }
+
+    public int getAddressCode() {
+        return addressCode;
+    }
+
+    public void setAddressCode(int addressCode) {
+        this.addressCode = addressCode;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

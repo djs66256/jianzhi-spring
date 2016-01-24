@@ -6,6 +6,7 @@ import com.jianzhi.core.user.model.User;
 import sun.dc.pr.PRError;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Table
 @Entity
@@ -44,6 +45,9 @@ public class Job {
 
     @Column
     private int salary;
+
+    @Column
+    private Date createTime = new Date();
 
     public Long getId() {
         return id;
@@ -107,5 +111,13 @@ public class Job {
 
     public void setSalary(int salary) {
         this.salary = salary;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

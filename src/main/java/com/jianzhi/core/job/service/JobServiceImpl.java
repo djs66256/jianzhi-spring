@@ -2,6 +2,7 @@ package com.jianzhi.core.job.service;
 
 import com.jianzhi.core.job.dao.JobDao;
 import com.jianzhi.core.job.model.Job;
+import com.jianzhi.core.job.model.JobDetailInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +21,17 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public Job findById(Long id) {
-        return jobDao.findByIdAndActive(id, true);
+        return jobDao.findOne(id);
     }
 
     @Override
     public void delete(Job job) {
         job.setActive(false);
         save(job);
+    }
+
+    @Override
+    public JobDetailInfo findDetailInfo(Long id) {
+        return jobDao.findDetailInfoOne(id);
     }
 }

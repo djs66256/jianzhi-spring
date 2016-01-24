@@ -3,9 +3,14 @@ package com.jianzhi;
 
 import com.jianzhi.core.auth.model.Token;
 import com.jianzhi.core.auth.service.TokenService;
+import com.jianzhi.core.job.model.Job;
+import com.jianzhi.core.job.service.JobService;
+import com.jianzhi.core.location.model.Location;
+import com.jianzhi.core.location.service.LocationService;
 import com.jianzhi.core.phone.service.PhoneValidateService;
 import com.jianzhi.core.user.dao.UserDao;
 import com.jianzhi.core.user.model.User;
+import com.jianzhi.util.baiduMap.BaiduMapApi;
 import com.jianzhi.util.message.ReturnMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -15,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -32,6 +39,15 @@ public class GreetingController {
 
     @Autowired
     private PhoneValidateService phoneValidateService;
+
+    @Autowired
+    private LocationService locationService;
+
+    @Autowired
+    private BaiduMapApi baiduMapApi;
+
+    @Autowired
+    private JobService jobService;
 
     @RequestMapping("/greeting")
     public Object greeting(@CookieValue(value = "token", required = false) String token,
@@ -101,6 +117,42 @@ public class GreetingController {
                            @RequestParam String validate){
         return phoneValidateService.isValidated(validate, phone);
 
+    }
+
+    @RequestMapping("/json/addr")
+    public Object addr() {
+//        Address address = new Address();
+//        Random random = new Random();
+//        address.setAddress(""+random.nextInt(50));
+//        address.setLatitude(random.nextInt(50));
+//        address.setLongitude(random.nextInt(50));
+//
+//        addressService.save(address);
+//
+//        return address;
+
+        List<Location> addressList = locationService.find();
+        return addressList;
+    }
+
+    @RequestMapping("/json/map")
+    public Object map() {
+        try {
+            return baiduMapApi.getGeocode("浙江省");
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    @RequestMapping("/json/job/info")
+    public Object jobInfo() {
+        try {
+            return jobService.findDetailInfo(new Long(1));
+        }
+        catch (Exception e) {
+            return null;
+        }
     }
 
 }
