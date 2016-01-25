@@ -36,6 +36,21 @@ public class ResumeController {
         if (education.getSchool() == null || education.getSchool().isEmpty()) {
             throw new Exception("学校为空");
         }
+        if (education.getFromTime() == null) {
+            throw new Exception("开始时间为空");
+        }
+        if (education.getToTime() == null) {
+            throw new Exception("结束时间为空");
+        }
+        if (education.getToTime().getTime() != 0 && education.getFromTime().after(education.getToTime())) {
+            throw new Exception("开始时间不能早于结束时间");
+        }
+        if (education.getMajor() == null || education.getMajor().isEmpty()) {
+            throw new Exception("专业为空");
+        }
+        if (education.getLevel() == Education.NO_LEVEL) {
+            throw new Exception("学历为空");
+        }
 
         return true;
     }
@@ -46,6 +61,18 @@ public class ResumeController {
         }
         if (workExperience.getPosition() == null || workExperience.getPosition().isEmpty()) {
             throw new Exception("职位名称为空");
+        }
+        if (workExperience.getFromTime() == null) {
+            throw new Exception("开始时间为空");
+        }
+        if (workExperience.getToTime() == null) {
+            throw new Exception("结束时间为空");
+        }
+        if (workExperience.getToTime().getTime() != 0 && workExperience.getFromTime().after(workExperience.getToTime())) {
+            throw new Exception("开始时间不能早于结束时间");
+        }
+        if (workExperience.getPosition() == null || workExperience.getPosition().isEmpty()) {
+            throw new Exception("职位为空");
         }
 
         return true;

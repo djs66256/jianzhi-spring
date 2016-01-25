@@ -9,6 +9,15 @@ import java.util.List;
 @Entity
 @Table
 public class Education {
+    static public final int NO_LEVEL = 0;
+    static public final int OTHER_SCHOOL = 10;
+    static public final int JUNIOR_SCHOOL = 20; //初中
+    static public final int HIGH_SCHOOL = 30; //高中
+    static public final int SECONDARY_SPECIALIZED_SCHOOL = 40; //中专
+    static public final int JUNIOR_COLLEGE = 50; //大专
+    static public final int BACHELOR = 60; // 本科
+    static public final int MASTER = 70; // 硕士
+    static public final int DOCTOR = 80; // 博士
 
     @Id
     @GeneratedValue
@@ -21,7 +30,7 @@ public class Education {
     private String major;
 
     @Column
-    private int level = BaseResume.OTHER_SCHOOL;
+    private int level = Education.NO_LEVEL;
 
     @Column
     private Date fromTime;

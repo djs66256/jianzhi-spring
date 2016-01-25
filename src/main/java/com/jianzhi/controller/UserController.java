@@ -171,11 +171,10 @@ public class UserController {
 
                 user.setNickName(nickName);
                 user.setCity(city);
-                if ("m".equals(gender)) {
-                    user.setGender("m");
-                } else if ("f".equals(gender)) {
-                    user.setGender("f");
-                } else {
+                if ("m".equals(gender) || "f".equals(gender)) {
+                    user.setGender(gender);
+                }
+                else {
                     user.setGender("u");
                 }
 
@@ -268,10 +267,8 @@ public class UserController {
         if (city != null && !city.isEmpty()) {
             user.setCity(city);
         }
-        if ("m".equals(gender)) {
-            user.setGender("m");
-        } else if ("f".equals(gender)) {
-            user.setGender("f");
+        if ("m".equals(gender) || "f".equals(gender)) {
+            user.setGender(gender);
         } else {
             user.setGender("u");
         }
