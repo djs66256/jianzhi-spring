@@ -151,7 +151,7 @@ public class GreetingController {
             return jobService.findDetailInfo(new Long(1));
         }
         catch (Exception e) {
-            return null;
+            return e.getMessage();
         }
     }
 

@@ -3,8 +3,11 @@ package com.jianzhi.core.job.service;
 import com.jianzhi.core.job.dao.JobDao;
 import com.jianzhi.core.job.model.Job;
 import com.jianzhi.core.job.model.JobDetailInfo;
+import com.jianzhi.core.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by daniel on 16/1/4.
@@ -22,6 +25,11 @@ public class JobServiceImpl implements JobService {
     @Override
     public Job findById(Long id) {
         return jobDao.findOne(id);
+    }
+
+    @Override
+    public List<Job> findByUser(User user) {
+        return jobDao.findByUser(user);
     }
 
     @Override

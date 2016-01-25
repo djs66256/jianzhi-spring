@@ -47,21 +47,24 @@ public class User {
     @Column
     private Date registerTime;
 
-//    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
-//    private BaseResume resume;
-
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
-    private Company company;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Job> jobs = new ArrayList<>();
-
     public User() {
     }
 
     public User(String name, String password) {
         this.name = name;
         this.password = password;
+    }
+
+    public User(User user) {
+        id = user.id;
+        name = user.name;
+        groupType = user.groupType;
+        nickName = user.nickName;
+        headImage = user.headImage;
+        city = user.city;
+        gender = user.headImage;
+        gender = user.gender;
+        registerTime = user.registerTime;
     }
 
     public Long getId() {
@@ -126,22 +129,6 @@ public class User {
 
     public void setGender(String gender) {
         this.gender = gender;
-    }
-
-    public Company getCompany() {
-        return company;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
-    }
-
-    public List<Job> getJobs() {
-        return jobs;
-    }
-
-    public void setJobs(List<Job> jobs) {
-        this.jobs = jobs;
     }
 
     public Date getRegisterTime() {

@@ -5,7 +5,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jianzhi.core.auth.model.Token;
 import com.jianzhi.core.auth.service.TokenService;
+import com.jianzhi.core.company.model.Company;
+import com.jianzhi.core.company.service.CompanyService;
+import com.jianzhi.core.job.service.JobService;
 import com.jianzhi.core.phone.service.PhoneValidateService;
+import com.jianzhi.core.resume.model.BaseResume;
+import com.jianzhi.core.resume.service.ResumeService;
+import com.jianzhi.core.user.model.BossUserInfo;
+import com.jianzhi.core.user.model.JobSeekerUserInfo;
 import com.jianzhi.core.user.model.User;
 import com.jianzhi.core.user.service.UserService;
 import com.jianzhi.util.encode.Encoder;
@@ -19,6 +26,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 @RequestMapping("/json")
@@ -29,6 +37,15 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ResumeService resumeService;
+
+    @Autowired
+    private JobService jobService;
+
+    @Autowired
+    private CompanyService companyService;
 
     @Autowired
     private Encoder passwordEncoder;
@@ -274,6 +291,35 @@ public class UserController {
                                  HttpServletRequest request) {
         // TODO:.....
         return new ReturnMessage(ReturnMessage.ERROR, "");
+    }
+
+    @RequestMapping("/user/my/info")
+    public Object getMyInfo(HttpServletRequest request) {
+        User user = (User)request.getSession().getAttribute("user");
+
+
+        return new ReturnMessage(ReturnMessage.SUCCESS, user);
+    }
+
+    @RequestMapping("/user/my/allinfo")
+    public Object getMyAllInfo(HttpServletRequest request) {
+        User user = (User)request.getSession().getAttribute("user");
+        if (user.getGroupType() == User.JOBSEEKER) {
+            JobSeekerUserInfo jobSeekerUserInfo = new JobSeekerUserInfo(user);
+            BaseResume resume = resumeService.findResumeByUser(user);
+            jobSeekerUserInfo.setResume(resume);
+            user = jobSeekerUserInfo;
+        }
+        else if (user.getGroupType() == User.BOSS) {
+            Company company = companyService.findByUser(user);
+            List jobs = jobService.findByUser(user);
+            BossUserInfo bossUserInfo = new BossUserInfo(user);
+            bossUserInfo.setCompany(company);
+            bossUserInfo.setJobs(jobs);
+            user = bossUserInfo;
+        }
+
+        return new ReturnMessage(ReturnMessage.SUCCESS, user);
     }
 
     @RequestMapping("/need_login")

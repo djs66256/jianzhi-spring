@@ -1,5 +1,6 @@
 package com.jianzhi.controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jianzhi.core.company.model.Company;
 import com.jianzhi.core.company.service.CompanyService;
 import com.jianzhi.core.location.model.Location;
@@ -87,12 +88,12 @@ public class CompanyController {
             return new ReturnMessage(ReturnMessage.ERROR, e.getMessage());
         }
     }
-/*
-    @RequestMapping(value = "/info", method = RequestMethod.POST)
+
+    @RequestMapping(value = "/my/info", method = RequestMethod.POST)
     @JsonIgnoreProperties(value = {"user"})
     public Object infoCompany(HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
-        Company company = user.getCompany();
+        Company company = companyService.findByUser(user);
         if (company != null) {
             return new ReturnMessage(ReturnMessage.SUCCESS, company);
         }
@@ -100,7 +101,7 @@ public class CompanyController {
             return new ReturnMessage(ReturnMessage.ERROR, "公司信息不存在");
         }
     }
-*/
+
     /*
     @RequestMapping(value = "/upload/logo", method = RequestMethod.POST)
     public Object uploadLogoCompany(@RequestParam MultipartFile file,

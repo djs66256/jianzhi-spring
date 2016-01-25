@@ -7,12 +7,10 @@ import com.jianzhi.core.job.service.JobService;
 import com.jianzhi.core.user.model.User;
 import com.jianzhi.util.message.ReturnMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/json/user/job", method = RequestMethod.POST)
@@ -105,11 +103,7 @@ public class JobController {
     }
 
     @RequestMapping("/info")
-    @JsonIgnoreProperties(value = {"user", "active"})
-    public Object infoJob(
-            String id,
-            HttpServletRequest request) {
-//        Job job = jobService.findById(new Long(id));
+    public Object infoJob(@RequestParam String id) {
         JobDetailInfo job = jobService.findDetailInfo(new Long(id));
         if (job != null) {
             return new ReturnMessage(ReturnMessage.SUCCESS, job);
@@ -117,6 +111,14 @@ public class JobController {
         else {
             return new ReturnMessage(ReturnMessage.ERROR, "工作信息不存在");
         }
+    }
+
+    @RequestMapping("/my/info")
+    public Object myJobList(HttpServletRequest request) {
+        User user = (User)request.getSession().getAttribute("user");
+        List<Job> jobList = jobService.findByUser(user);
+
+        return new ReturnMessage(ReturnMessage.SUCCESS, jobList);
     }
 
 }

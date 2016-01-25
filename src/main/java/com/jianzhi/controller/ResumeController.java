@@ -208,6 +208,14 @@ public class ResumeController {
         }
     }
 
+    @RequestMapping("/my/info")
+    public Object myResume(HttpServletRequest request) {
+        User user = (User)request.getSession().getAttribute("user");
+        BaseResume resume = resumeService.findResumeByUser(user);
+
+        return new ReturnMessage(ReturnMessage.SUCCESS, resume);
+    }
+
     @RequestMapping(value = "/post", method = RequestMethod.POST)
     public Object postResume(@RequestBody BaseResume resume,
                                HttpServletRequest request) {

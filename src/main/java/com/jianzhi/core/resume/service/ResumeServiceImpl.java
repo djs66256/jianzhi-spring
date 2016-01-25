@@ -55,6 +55,7 @@ public class ResumeServiceImpl implements ResumeService {
         BaseResume resume = resumeDao.findByUser(user);
         if (resume == null) {
             resume = new BaseResume();
+            resume.setUser(user);
             saveAll(resume);
         }
         return resume;
