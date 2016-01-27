@@ -11,7 +11,7 @@ public interface FileService {
 
     void saveDistinct(File file, MultipartFile fileData);
 
-    void saveHeadImage(User user, MultipartFile file) throws Exception;
+    String saveHeadImage(User user, MultipartFile file) throws Exception;
 
 
 }

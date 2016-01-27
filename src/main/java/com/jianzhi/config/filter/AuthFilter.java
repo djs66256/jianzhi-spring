@@ -1,4 +1,4 @@
-package com.jianzhi.core.filter;
+package com.jianzhi.config.filter;
 
 import com.jianzhi.core.auth.model.Token;
 import com.jianzhi.core.auth.service.TokenService;

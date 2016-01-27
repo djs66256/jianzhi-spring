@@ -7,6 +7,7 @@ import com.jianzhi.core.auth.model.Token;
 import com.jianzhi.core.auth.service.TokenService;
 import com.jianzhi.core.company.model.Company;
 import com.jianzhi.core.company.service.CompanyService;
+import com.jianzhi.core.file.service.FileService;
 import com.jianzhi.core.job.service.JobService;
 import com.jianzhi.core.phone.service.PhoneValidateService;
 import com.jianzhi.core.resume.model.BaseResume;
@@ -49,6 +50,9 @@ public class UserController {
 
     @Autowired
     private Encoder passwordEncoder;
+
+    @Autowired
+    private FileService fileService;
 
     @Autowired
     private PhoneValidateService phoneValidateService;
@@ -323,8 +327,16 @@ public class UserController {
     @RequestMapping(value = "/user/upload/head", method = RequestMethod.POST)
     public Object uploadUserHead(@RequestParam MultipartFile file,
                                  HttpServletRequest request) {
-        // TODO:.....
-        return new ReturnMessage(ReturnMessage.ERROR, "");
+        try {
+            User user = (User)request.getSession().getAttribute("user");
+            String fileName = fileService.saveHeadImage(user, file);
+            user.setHeadImage(fileName);
+            userService.save(user);
+            return new ReturnMessage(ReturnMessage.SUCCESS, fileName);
+        }
+        catch (Exception e) {
+            return new ReturnMessage(ReturnMessage.ERROR, e.getMessage());
+        }
     }
 
     @RequestMapping(value = "/user/upload/idcard", method = RequestMethod.POST)
