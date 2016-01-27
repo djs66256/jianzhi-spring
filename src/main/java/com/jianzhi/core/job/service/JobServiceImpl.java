@@ -34,8 +34,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public void delete(Job job) {
-        job.setActive(false);
-        save(job);
+        jobDao.delete(job);
     }
 
     @Override

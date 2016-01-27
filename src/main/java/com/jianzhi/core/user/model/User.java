@@ -47,6 +47,9 @@ public class User {
     @Column
     private Date registerTime;
 
+    @Column
+    private String description;
+
     public User() {
     }
 
@@ -65,6 +68,7 @@ public class User {
         gender = user.headImage;
         gender = user.gender;
         registerTime = user.registerTime;
+        description = user.description;
     }
 
     public Long getId() {
@@ -137,6 +141,14 @@ public class User {
 
     public void setRegisterTime(Date registerTime) {
         this.registerTime = registerTime;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

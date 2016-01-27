@@ -70,4 +70,14 @@ public class ResumeServiceImpl implements ResumeService {
     public WorkExperience findWorkExperienceById(Long id) {
         return workExperienceDao.findOne(id);
     }
+
+    @Override
+    public void deleteEducation(Education education) {
+        educationDao.delete(education);
+    }
+
+    @Override
+    public void deleteWorkExperience(WorkExperience workExperience) {
+        workExperienceDao.delete(workExperience);
+    }
 }

@@ -49,10 +49,10 @@ public class JobController {
 
 
     @RequestMapping("/delete")
-    public Object deleteJob(String jobId,
+    public Object deleteJob(@RequestParam(required = false) String id,
                             HttpServletRequest request) {
         try {
-            Job job = jobService.findById(new Long(jobId));
+            Job job = jobService.findById(new Long(id));
             if (job != null) {
                 User user = (User) request.getSession().getAttribute("user");
                 if (job.getUser().getId().equals(user.getId())) {
@@ -73,7 +73,7 @@ public class JobController {
     }
 
     @RequestMapping("/edit")
-    public Object editJob(Job job,
+    public Object editJob(@RequestBody Job job,
                           HttpServletRequest request) {
         try {
             Job myJob = jobService.findById(job.getId());

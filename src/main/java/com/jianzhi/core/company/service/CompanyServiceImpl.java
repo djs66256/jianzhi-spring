@@ -28,11 +28,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public Company findByUser(User user) {
         Company company = companyDao.findByUser(user);
-        if (company == null) {
-            company = new Company();
-            company.setUser(user);
-            save(company);
-        }
+
         return company;
     }
 }

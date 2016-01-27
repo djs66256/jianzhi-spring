@@ -15,4 +15,7 @@ public interface ResumeService {
     BaseResume findResumeByUser(User user);
     Education findEducationById(Long id);
     WorkExperience findWorkExperienceById(Long id);
+
+    void deleteWorkExperience(WorkExperience workExperience);
+    void deleteEducation(Education education);
 }

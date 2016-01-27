@@ -173,14 +173,21 @@ public class ResumeController {
     }
 
     @RequestMapping(value = "/work/delete")
-    public Object workCreateResume(@RequestParam List<String> workId,
+    public Object workDeleteResume(@RequestParam String id,
                                    HttpServletRequest request) {
-        try {
-        // TODO: delete
-            return new ReturnMessage(ReturnMessage.SUCCESS);
+        WorkExperience workExperience = resumeService.findWorkExperienceById(new Long(id));
+        if (workExperience != null) {
+            User user = (User) request.getSession().getAttribute("user");
+            if (workExperience.getResume().getUser().getId().equals(user.getId())) {
+                resumeService.deleteWorkExperience(workExperience);
+                return new ReturnMessage(ReturnMessage.SUCCESS);
+            }
+            else {
+                return new ReturnMessage(ReturnMessage.ERROR, "你无权删除该工作");
+            }
         }
-        catch (Exception e) {
-            return new ReturnMessage(ReturnMessage.ERROR, e.getMessage());
+        else {
+            return new ReturnMessage(ReturnMessage.ERROR, "工作信息不存在");
         }
     }
 
@@ -232,6 +239,26 @@ public class ResumeController {
         }
         else {
             return new ReturnMessage(ReturnMessage.ERROR, "教育经历不存在");
+        }
+    }
+
+
+    @RequestMapping(value = "/education/delete")
+    public Object educationDeleteResume(@RequestParam String id,
+                                   HttpServletRequest request) {
+        Education education = resumeService.findEducationById(new Long(id));
+        if (education != null) {
+            User user = (User)request.getSession().getAttribute("user");
+            if (education.getResume().getUser().getId().equals(user.getId())) {
+                resumeService.deleteEducation(education);
+                return new ReturnMessage(ReturnMessage.SUCCESS);
+            }
+            else {
+                return new ReturnMessage(ReturnMessage.ERROR, "你无权删除该工作");
+            }
+        }
+        else {
+            return new ReturnMessage(ReturnMessage.ERROR, "工作信息不存在");
         }
     }
 

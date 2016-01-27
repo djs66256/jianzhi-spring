@@ -60,6 +60,9 @@ public class CompanyController {
             validateCompany(company);
             User user = (User) request.getSession().getAttribute("user");
             Company myCompany = companyService.findByUser(user);
+            if (myCompany==null) {
+                myCompany = new Company();
+            }
 
             myCompany.setName(company.getName());
             myCompany.setDescription(company.getDescription());

@@ -255,10 +255,49 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/user/edit", method = RequestMethod.POST)
+    @RequestMapping("/user/my/edit/nickname")
+    public Object editMyNickName(
+            @RequestParam(required = false) String nickname,
+            HttpServletRequest request) {
+        if (nickname != null && nickname.isEmpty()) {
+            return new ReturnMessage(ReturnMessage.ERROR, "姓名不能为空");
+        }
+
+        User user = (User) request.getSession().getAttribute("user");
+        user.setNickName(nickname);
+        userService.save(user);
+        return new ReturnMessage(ReturnMessage.SUCCESS);
+    }
+
+    @RequestMapping("/user/my/edit/gender")
+    public Object editMyGender(
+            @RequestParam(required = false) String gender,
+            HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+        if ("m".equals(gender) || "f".equals(gender) || "u".equals(gender)) {
+            user.setGender(gender);
+            userService.save(user);
+            return new ReturnMessage(ReturnMessage.SUCCESS);
+        } else {
+            return new ReturnMessage(ReturnMessage.ERROR, "性别非法");
+        }
+    }
+
+    @RequestMapping("/user/my/edit/description")
+    public Object editMyDescription(
+            @RequestParam(required = false) String description,
+            HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+        user.setDescription(description);
+        userService.save(user);
+        return new ReturnMessage(ReturnMessage.SUCCESS);
+    }
+
+    @RequestMapping(value = "/user/my/edit/info", method = RequestMethod.POST)
     public Object editUser(@RequestParam(required = false) String nickName,
                            @RequestParam(required = false) String city,
                            @RequestParam(required = false) String gender,
+                           @RequestParam(required = false) String description,
                            HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
         if (nickName != null && !nickName.isEmpty()) {
@@ -267,14 +306,19 @@ public class UserController {
         if (city != null && !city.isEmpty()) {
             user.setCity(city);
         }
-        if ("m".equals(gender) || "f".equals(gender)) {
-            user.setGender(gender);
-        } else {
-            user.setGender("u");
+        if (gender != null) {
+            if ("m".equals(gender) || "f".equals(gender)) {
+                user.setGender(gender);
+            } else {
+                user.setGender("u");
+            }
         }
+
+
         userService.save(user);
         return new ReturnMessage(ReturnMessage.SUCCESS);
     }
+
 
     @RequestMapping(value = "/user/upload/head", method = RequestMethod.POST)
     public Object uploadUserHead(@RequestParam MultipartFile file,
