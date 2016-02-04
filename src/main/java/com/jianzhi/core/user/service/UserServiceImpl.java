@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by daniel on 15/6/16.
@@ -34,5 +35,10 @@ public class UserServiceImpl implements UserService {
 
     public User findOne(Long id) {
         return userDao.findOne(id);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userDao.findAll();
     }
 }

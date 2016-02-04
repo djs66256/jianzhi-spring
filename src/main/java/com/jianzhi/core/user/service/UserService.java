@@ -2,6 +2,8 @@ package com.jianzhi.core.user.service;
 
 import com.jianzhi.core.user.model.User;
 
+import java.util.List;
+
 /**
  * Created by daniel on 15/6/16.
  */
@@ -15,4 +17,6 @@ public interface UserService {
     User findByName(String name);
 
     User findOne(Long id);
+
+    List<User> findAll();
 }

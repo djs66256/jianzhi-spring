@@ -95,8 +95,10 @@ public class UserController {
                 Token token = tokenService.saveSession(user);
                 Cookie cookie1 = new Cookie("token", token.getToken());
                 cookie1.setMaxAge(tokenService.getMaxAge());
+                cookie1.setPath("/");
                 Cookie cookie2 = new Cookie("uid", token.getUser().getId().toString());
                 cookie2.setMaxAge(tokenService.getMaxAge());
+                cookie2.setPath("/");
                 response.addCookie(cookie1);
                 response.addCookie(cookie2);
 
