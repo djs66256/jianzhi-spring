@@ -5,8 +5,8 @@ import com.jianzhi.core.user.model.User;
 import javax.persistence.*;
 import java.util.Date;
 
-//@Table
-//@Entity
+@Table
+@Entity
 public class Message {
     final public static int MESSAGE = 1;
     final public static int JOB = 2;
@@ -19,18 +19,23 @@ public class Message {
     @Column
     private int type;
 
-    @Column
-    private boolean read;
-
-    @Column
-    private Date time;
-
-    @Column
-    private String content;
-
     @Column(length = 32)
-    private String imageId;
+    private String uuid;
 
+//    @Column
+//    private boolean read;
+
+    @Column
+    private Date time = new Date();
+
+    @Column
+    private String text;
+
+//    @Column(length = 32)
+//    private String imageId;
+
+    @Column
+    private boolean downloaded = false;
 
 
     @ManyToOne
@@ -72,4 +77,39 @@ public class Message {
         this.toUser = toUser;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public boolean isDownloaded() {
+        return downloaded;
+    }
+
+    public void setDownloaded(boolean downloaded) {
+        this.downloaded = downloaded;
+    }
 }
