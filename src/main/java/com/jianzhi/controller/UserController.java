@@ -377,6 +377,17 @@ public class UserController {
         return new ReturnMessage(ReturnMessage.SUCCESS, user);
     }
 
+    @RequestMapping("/user/info")
+    public Object getUserInfo(@RequestParam(required = false) String uid) {
+        User user = userService.findOne(new Long(uid));
+        if (user != null) {
+            return new ReturnMessage(ReturnMessage.SUCCESS, user);
+        }
+        else {
+            return new ReturnMessage(ReturnMessage.ERROR, "用户不存在");
+        }
+    }
+
     @RequestMapping("/need_login")
     public Object needLogin() {
         return new ReturnMessage(ReturnMessage.NEED_LOGIN, "need login");
