@@ -377,15 +377,40 @@ public class UserController {
         return new ReturnMessage(ReturnMessage.SUCCESS, user);
     }
 
+    @RequestMapping("/user/allinfo")
+    public Object getUserAllInfo(@RequestParam(required = false) String uid) {
+        if (uid != null) {
+            User user = userService.findOne(new Long(uid));
+            if (user != null) {
+                if (user.getGroupType() == User.JOBSEEKER) {
+                    JobSeekerUserInfo jobSeekerUserInfo = new JobSeekerUserInfo(user);
+                    BaseResume resume = resumeService.findResumeByUser(user);
+                    jobSeekerUserInfo.setResume(resume);
+                    user = jobSeekerUserInfo;
+                } else if (user.getGroupType() == User.BOSS) {
+                    Company company = companyService.findByUser(user);
+                    List jobs = jobService.findByUser(user);
+                    BossUserInfo bossUserInfo = new BossUserInfo(user);
+                    bossUserInfo.setCompany(company);
+                    bossUserInfo.setJobs(jobs);
+                    user = bossUserInfo;
+                }
+
+                return new ReturnMessage(ReturnMessage.SUCCESS, user);
+            }
+        }
+        return new ReturnMessage(ReturnMessage.ERROR, "用户不存在");
+    }
+
     @RequestMapping("/user/info")
     public Object getUserInfo(@RequestParam(required = false) String uid) {
-        User user = userService.findOne(new Long(uid));
-        if (user != null) {
-            return new ReturnMessage(ReturnMessage.SUCCESS, user);
+        if (uid != null) {
+            User user = userService.findOne(new Long(uid));
+            if (user != null) {
+                return new ReturnMessage(ReturnMessage.SUCCESS, user);
+            }
         }
-        else {
-            return new ReturnMessage(ReturnMessage.ERROR, "用户不存在");
-        }
+        return new ReturnMessage(ReturnMessage.ERROR, "用户不存在");
     }
 
     @RequestMapping("/need_login")
