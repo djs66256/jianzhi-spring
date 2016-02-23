@@ -1,5 +1,6 @@
 package com.jianzhi.core.message.model;
 
+import com.jianzhi.core.job.model.Job;
 import com.jianzhi.core.user.model.User;
 
 import javax.persistence.*;
@@ -43,6 +44,12 @@ public class Message {
 
     @ManyToOne
     private User toUser;
+
+    @ManyToOne
+    private Job job;
+
+    @ManyToOne
+    private User nameCard;
 
 
     public Message(int type) {
@@ -111,5 +118,21 @@ public class Message {
 
     public void setDownloaded(boolean downloaded) {
         this.downloaded = downloaded;
+    }
+
+    public Job getJob() {
+        return job;
+    }
+
+    public void setJob(Job job) {
+        this.job = job;
+    }
+
+    public User getNameCard() {
+        return nameCard;
+    }
+
+    public void setNameCard(User nameCard) {
+        this.nameCard = nameCard;
     }
 }
