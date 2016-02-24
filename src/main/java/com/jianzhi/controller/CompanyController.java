@@ -62,6 +62,8 @@ public class CompanyController {
             Company myCompany = companyService.findByUser(user);
             if (myCompany==null) {
                 myCompany = new Company();
+                myCompany.setUser(user);
+                companyService.save(myCompany);
             }
 
             myCompany.setName(company.getName());
