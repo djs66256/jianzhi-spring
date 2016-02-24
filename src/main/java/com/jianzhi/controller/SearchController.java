@@ -6,10 +6,7 @@ import com.jianzhi.core.search.service.SearchService;
 import com.jianzhi.core.user.service.UserService;
 import com.jianzhi.util.message.ReturnMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -54,5 +51,33 @@ public class SearchController {
 //            @RequestBody PersonFilter personFilter,
             HttpServletRequest request) {
         return new ReturnMessage(ReturnMessage.SUCCESS, userService.findAll());
+    }
+
+    @RequestMapping("/map")
+    public Object mapSearch(
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) double lat,
+            @RequestParam(required = false) double lon,
+            @RequestParam(required = false) double range
+    ) {
+        if (type == null) {
+            return new ReturnMessage(ReturnMessage.ERROR, "参数错误");
+        }
+        else {
+            List mapItemList = null;
+            if ("all".equals(type)) {
+                mapItemList = searchService.findMapItemsByLocation(lat, lon, range);
+            }
+            else if ("company".equals(type)) {
+                mapItemList = searchService.findMapCompanyItemsByLocation(lat, lon, range);
+            }
+            else if ("jobseeker".equals(type)) {
+                mapItemList = searchService.findMapJobseekerItemsByLocation(lat, lon, range);
+            }
+            else {
+                return new ReturnMessage(ReturnMessage.ERROR, "参数错误");
+            }
+            return new ReturnMessage(ReturnMessage.SUCCESS, mapItemList);
+        }
     }
 }
