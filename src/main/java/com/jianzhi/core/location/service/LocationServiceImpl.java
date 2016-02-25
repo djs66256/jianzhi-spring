@@ -3,6 +3,7 @@ package com.jianzhi.core.location.service;
 import com.jianzhi.core.company.model.Company;
 import com.jianzhi.core.location.dao.LocationDao;
 import com.jianzhi.core.location.model.Location;
+import com.jianzhi.core.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +42,10 @@ public class LocationServiceImpl implements LocationService {
         Location address = new Location();
         address.setCompany(company);
         return address;
+    }
+
+    @Override
+    public Location findByUser(User user) {
+        return locationDao.findByUser(user);
     }
 }

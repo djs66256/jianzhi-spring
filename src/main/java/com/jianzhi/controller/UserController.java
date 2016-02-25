@@ -9,6 +9,8 @@ import com.jianzhi.core.company.model.Company;
 import com.jianzhi.core.company.service.CompanyService;
 import com.jianzhi.core.file.service.FileService;
 import com.jianzhi.core.job.service.JobService;
+import com.jianzhi.core.location.model.Location;
+import com.jianzhi.core.location.service.LocationService;
 import com.jianzhi.core.phone.service.PhoneValidateService;
 import com.jianzhi.core.resume.model.BaseResume;
 import com.jianzhi.core.resume.service.ResumeService;
@@ -53,6 +55,9 @@ public class UserController {
 
     @Autowired
     private FileService fileService;
+
+    @Autowired
+    private LocationService locationService;
 
     @Autowired
     private PhoneValidateService phoneValidateService;
@@ -341,6 +346,22 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "/user/upload/location")
+    public Object uploadLocation(@RequestParam double lat,
+                                 @RequestParam double lon,
+                                 HttpServletRequest request) {
+        User user = (User)request.getSession().getAttribute("user");
+        Location location = locationService.findByUser(user);
+        if (location == null) {
+            location = new Location();
+            location.setUser(user);
+        }
+        location.setLatitude(lat);
+        location.setLongitude(lon);
+        locationService.save(location);
+        return new ReturnMessage(ReturnMessage.SUCCESS);
+    }
+
     @RequestMapping(value = "/user/upload/idcard", method = RequestMethod.POST)
     public Object uploadUserIdCard(@RequestParam MultipartFile file,
                                  HttpServletRequest request) {
@@ -356,9 +377,7 @@ public class UserController {
         return new ReturnMessage(ReturnMessage.SUCCESS, user);
     }
 
-    @RequestMapping("/user/my/allinfo")
-    public Object getMyAllInfo(HttpServletRequest request) {
-        User user = (User)request.getSession().getAttribute("user");
+    private User fillFullUserInfo(User user) {
         if (user.getGroupType() == User.JOBSEEKER) {
             JobSeekerUserInfo jobSeekerUserInfo = new JobSeekerUserInfo(user);
             BaseResume resume = resumeService.findResumeByUser(user);
@@ -373,6 +392,13 @@ public class UserController {
             bossUserInfo.setJobs(jobs);
             user = bossUserInfo;
         }
+        return user;
+    }
+
+    @RequestMapping("/user/my/allinfo")
+    public Object getMyAllInfo(HttpServletRequest request) {
+        User user = (User)request.getSession().getAttribute("user");
+        user = fillFullUserInfo(user);
 
         return new ReturnMessage(ReturnMessage.SUCCESS, user);
     }
@@ -382,19 +408,7 @@ public class UserController {
         if (uid != null) {
             User user = userService.findOne(new Long(uid));
             if (user != null) {
-                if (user.getGroupType() == User.JOBSEEKER) {
-                    JobSeekerUserInfo jobSeekerUserInfo = new JobSeekerUserInfo(user);
-                    BaseResume resume = resumeService.findResumeByUser(user);
-                    jobSeekerUserInfo.setResume(resume);
-                    user = jobSeekerUserInfo;
-                } else if (user.getGroupType() == User.BOSS) {
-                    Company company = companyService.findByUser(user);
-                    List jobs = jobService.findByUser(user);
-                    BossUserInfo bossUserInfo = new BossUserInfo(user);
-                    bossUserInfo.setCompany(company);
-                    bossUserInfo.setJobs(jobs);
-                    user = bossUserInfo;
-                }
+                user = fillFullUserInfo(user);
 
                 return new ReturnMessage(ReturnMessage.SUCCESS, user);
             }

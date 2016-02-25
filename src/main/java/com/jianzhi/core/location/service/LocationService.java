@@ -2,6 +2,7 @@ package com.jianzhi.core.location.service;
 
 import com.jianzhi.core.company.model.Company;
 import com.jianzhi.core.location.model.Location;
+import com.jianzhi.core.user.model.User;
 
 import java.util.List;
 
@@ -13,4 +14,5 @@ public interface LocationService {
 
     List<Location> find();
     Location findByCompany(Company company);
+    Location findByUser(User user);
 }
