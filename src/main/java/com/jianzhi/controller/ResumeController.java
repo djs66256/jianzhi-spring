@@ -6,7 +6,9 @@ import com.jianzhi.core.resume.model.Education;
 import com.jianzhi.core.resume.model.WorkExperience;
 import com.jianzhi.core.resume.service.ResumeService;
 import com.jianzhi.core.user.model.User;
+import com.jianzhi.core.user.service.UserService;
 import com.jianzhi.util.message.ReturnMessage;
+import com.jianzhi.util.socket.SocketApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +21,12 @@ public class ResumeController {
 
     @Autowired
     private ResumeService resumeService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private SocketApi socketApi;
 
     private boolean validateResume(BaseResume resume) throws Exception {
         for(Education education : resume.getEducations()) {
@@ -270,11 +278,33 @@ public class ResumeController {
         return new ReturnMessage(ReturnMessage.SUCCESS, resume);
     }
 
-    @RequestMapping(value = "/post", method = RequestMethod.POST)
-    public Object postResume(@RequestBody BaseResume resume,
-                               HttpServletRequest request) {
-
-        return new ReturnMessage(ReturnMessage.ERROR, "");
+    @RequestMapping(value = "/post")
+    public Object postResume(@RequestParam long uid,
+                             @RequestParam(required = false) String cid,
+                             @RequestParam(required = false) String text,
+                             HttpServletRequest request) {
+        User user = (User)request.getSession().getAttribute("user");
+        User toUser = userService.findOne(uid);
+        if (toUser == null) {
+            return new ReturnMessage(ReturnMessage.ERROR, "用户不存在");
+        }
+        User card = null;
+        if (cid == null || cid.isEmpty()) {
+            card = user;
+        }
+        else {
+            card = userService.findOne(new Long(cid));
+            if (card == null) {
+                return new ReturnMessage(ReturnMessage.ERROR, "用户不存在");
+            }
+        }
+        try {
+            ReturnMessage ret = socketApi.postResume(user.getId().toString(), toUser.getId().toString(), card.getId().toString(), text);
+            return ret;
+        }
+        catch (Exception e) {
+            return new ReturnMessage(ReturnMessage.ERROR, e.getLocalizedMessage());
+        }
     }
 
 }

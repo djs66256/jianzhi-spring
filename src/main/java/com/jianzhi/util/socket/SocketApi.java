@@ -27,14 +27,6 @@ public class SocketApi {
 
 
     public ReturnMessage postJob(String from, String to, String jid, String text) throws Exception {
-        Map<String, Object> params = new LinkedHashMap<>();
-        params.put("from", from);
-        params.put("to", to);
-        params.put("jid", jid);
-        if (text != null) {
-            params.put("text", text);
-        }
-
         List<BasicNameValuePair> nameValuePairs = new ArrayList<>();
         nameValuePairs.add(new BasicNameValuePair("from", from));
         nameValuePairs.add(new BasicNameValuePair("to", to));
@@ -46,6 +38,31 @@ public class SocketApi {
         nameValuePairs.add(new BasicNameValuePair("uuid", uuid));
 
         String url = baseUrl + "/post/job";
+
+        HttpPost httpPost = new HttpPost(url);
+        HttpEntity entity = new UrlEncodedFormEntity(nameValuePairs, "UTF-8");
+        httpPost.setEntity(entity);
+        HttpResponse httpResponse = httpClient.execute(httpPost);
+        String result = EntityUtils.toString(httpResponse.getEntity());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map ret = objectMapper.readValue(result, Map.class);
+
+        return new ReturnMessage((int)ret.get("retCode"), ret.get("content"));
+    }
+
+    public ReturnMessage postResume(String from, String to, String uid, String text) throws Exception {
+        List<BasicNameValuePair> nameValuePairs = new ArrayList<>();
+        nameValuePairs.add(new BasicNameValuePair("from", from));
+        nameValuePairs.add(new BasicNameValuePair("to", to));
+        nameValuePairs.add(new BasicNameValuePair("uid", uid));
+        if (text != null) {
+            nameValuePairs.add(new BasicNameValuePair("text", text));
+        }
+        String uuid = UUID.randomUUID().toString().replace("-", "");
+        nameValuePairs.add(new BasicNameValuePair("uuid", uuid));
+
+        String url = baseUrl + "/post/resume";
 
         HttpPost httpPost = new HttpPost(url);
         HttpEntity entity = new UrlEncodedFormEntity(nameValuePairs, "UTF-8");
