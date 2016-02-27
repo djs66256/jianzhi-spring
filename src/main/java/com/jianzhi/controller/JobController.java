@@ -1,23 +1,37 @@
 package com.jianzhi.controller;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jianzhi.core.job.model.Job;
 import com.jianzhi.core.job.model.JobDetailInfo;
 import com.jianzhi.core.job.service.JobService;
 import com.jianzhi.core.user.model.User;
+import com.jianzhi.core.user.service.UserService;
 import com.jianzhi.util.message.ReturnMessage;
+import com.jianzhi.util.socket.SocketApi;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/json/user/job", method = RequestMethod.POST)
+@RequestMapping(value = "/json/user/job")//, method = RequestMethod.POST)
 public class JobController {
 
     @Autowired
     private JobService jobService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private SocketApi socketApi;
 
     private boolean validateJob(Job job) throws Exception{
         if (job.getTitle() == null || job.getTitle().isEmpty()) {
@@ -121,4 +135,27 @@ public class JobController {
         return new ReturnMessage(ReturnMessage.SUCCESS, jobList);
     }
 
+    @RequestMapping("/post")
+    public Object postMyJob(@RequestParam long uid,
+                            @RequestParam long jid,
+                            @RequestParam(required = false) String text,
+                            HttpServletRequest request) {
+        User user = (User)request.getSession().getAttribute("user");
+        User toUser = userService.findOne(uid);
+        if (toUser == null) {
+            return new ReturnMessage(ReturnMessage.ERROR, "用户不存在");
+        }
+        Job job = jobService.findById(jid);
+        if (job == null) {
+            return new ReturnMessage(ReturnMessage.ERROR, "工作不存在");
+        }
+
+        try {
+            ReturnMessage ret = socketApi.postJob(user.getId().toString(), toUser.getId().toString(), job.getId().toString(), text);
+            return ret;
+        }
+        catch (Exception e) {
+            return new ReturnMessage(ReturnMessage.ERROR, e.getLocalizedMessage());
+        }
+    }
 }
